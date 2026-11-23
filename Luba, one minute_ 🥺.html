@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Luba, one minute? 🥺</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#241238; --bg2:#5a2a6b; --petal:#ff8fb1; --peach:#ffd6c2; --lav:#cdb4ff; --ink:#fff4f8; --card:rgba(255,255,255,.12);
+  color-scheme: dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg1);
+  background:radial-gradient(120% 80% at 50% 0%,var(--bg2) 0%,var(--bg1) 70%) fixed;
+  color:var(--ink);font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);
+  overflow:hidden;
+}
+.sky{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.sky i{position:absolute;top:-8vh;font-style:normal;opacity:.75;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(115vh) rotate(360deg)}}
+main{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:18px}
+.dots{display:flex;gap:8px}
+.dots b{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);transition:.3s}
+.dots b.on{background:var(--petal);width:26px;border-radius:6px}
+.card{
+  width:min(440px,100%);background:var(--card);border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-radius:28px;padding:30px 24px 26px;text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+  animation:pop .45s cubic-bezier(.2,1.3,.4,1);
+}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+.face{font-size:64px;line-height:1;margin-bottom:6px;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+h1{font-family:Caveat,"Segoe Script",cursive;font-size:2.4rem;line-height:1.1;margin:6px 0 12px;color:var(--peach);font-weight:700}
+p{font-size:1.08rem;line-height:1.65;margin:0 0 10px;font-weight:500}
+p b{color:var(--petal);font-weight:800}
+.sign{font-family:Caveat,cursive;font-size:1.5rem;color:var(--lav);margin-top:8px}
+button{font:inherit;cursor:pointer;border:0}
+.next{
+  margin-top:16px;background:linear-gradient(135deg,var(--petal),#ffb48f);color:#3a1236;
+  font-weight:800;font-size:1.05rem;padding:15px 30px;border-radius:999px;min-height:52px;
+  box-shadow:0 8px 22px rgba(255,143,177,.45);transition:transform .15s;
+}
+.next:active{transform:scale(.95)}
+.back{display:block;margin:12px auto 0;background:none;color:rgba(255,255,255,.6);font-size:.9rem;padding:8px}
+.ask .btns{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:20px;min-height:70px;flex-wrap:wrap}
+.yes{
+  background:linear-gradient(135deg,#7be0a8,#4fc8a0);color:#0e3a2c;font-weight:800;
+  font-size:1.15rem;padding:15px 30px;border-radius:999px;min-height:54px;
+  box-shadow:0 8px 24px rgba(79,200,160,.5);transition:all .45s cubic-bezier(.2,1.2,.4,1);
+  animation:beat 1.6s ease-in-out infinite;
+}
+@keyframes beat{50%{transform:scale(1.05)}}
+.yes.l1{font-size:1.5rem;padding:22px 40px}
+.yes.l2{font-size:1.9rem;padding:34px 50px;width:100%}
+.yes.l3{font-size:2.3rem;padding:56px 24px;width:100%;border-radius:36px}
+.yes.l4{position:fixed;inset:0;z-index:50;border-radius:0;font-size:2.4rem;padding:20px;animation:none}
+.no{
+  background:rgba(255,255,255,.18);color:var(--ink);font-weight:700;font-size:1rem;
+  padding:12px 22px;border-radius:999px;min-height:46px;z-index:20;transition:left .25s,top .25s,transform .25s;
+}
+.no.run{position:fixed}
+.hint{min-height:1.4em;font-size:.95rem;color:var(--lav);margin-top:10px;font-weight:700}
+.hide{display:none!important}
+.done .face{font-size:84px}
+@media (prefers-reduced-motion:reduce){.sky,.face,.yes{animation:none}}
+</style>
+</head>
+<body>
+<div class="sky" id="sky" aria-hidden="true"></div>
+<main>
+  <div class="dots" id="dots"></div>
+  <section class="card" id="card"></section>
+</main>
+
+<script>
+(function(){
+  var steps=[
+    {f:"🥺",h:"Luba...",t:["Are you upset with me?","Please give me one minute."]},
+    {f:"🙏",h:"I am sorry",t:["I know I <b>irritate you a lot</b>.","Again and again.","I am not perfect. But no one is."]},
+    {f:"🌸",h:"One true thing",t:["You are <b>really precious</b> to me, Luba.","Truly.","I never want to lose you."]},
+    {f:"⏳",h:"Those 3-4 days",t:["But honestly, I <b>never want to see those 3-4 days</b>.","Not even one.","Whatever goes wrong, I will make it right."]},
+    {f:"😂",h:"Kitchen set bhi dila dunga.",t:[]},
+    {f:"🍛",h:"Biryani se leke Maggie bhi sikh lunga.",t:[]},
+    {ask:true,f:"🧸",h:"So Luba...",t:["Will you talk to me?","Just a small reply."]}
+  ];
+  var i=0,card=document.getElementById('card'),dots=document.getElementById('dots');
+  var petals=["🌸","✨","🌷","💫","🫧"];
+  var sky=document.getElementById('sky');
+  for(var k=0;k<16;k++){var e=document.createElement('i');e.textContent=petals[k%petals.length];
+    e.style.left=(Math.random()*100)+'vw';e.style.fontSize=(14+Math.random()*16)+'px';
+    e.style.animationDuration=(9+Math.random()*10)+'s';e.style.animationDelay=(-Math.random()*14)+'s';sky.appendChild(e);}
+
+  function renderDots(){
+    dots.innerHTML=steps.map(function(_,n){return '<b class="'+(n===i?'on':'')+'"></b>'}).join('');
+  }
+  function show(){
+    var s=steps[i];renderDots();
+    var html='<div class="face">'+s.f+'</div><h1>'+s.h+'</h1>'+s.t.map(function(x){return '<p>'+x+'</p>'}).join('');
+    if(s.ask){
+      html+='<div class="btns" id="btns"><button class="yes" id="yes">Yes, I will talk</button><button class="no" id="no">No</button></div><div class="hint" id="hint"></div>';
+      card.className='card ask';
+    }else{
+      html+='<button class="next" id="next">'+(i===steps.length-2?'Last one':'Next')+'</button>'+(i>0?'<button class="back" id="back">Back</button>':'');
+      card.className='card';
+    }
+    card.innerHTML=html;
+    card.style.animation='none';card.offsetHeight;card.style.animation='';
+    if(s.ask)initAsk();
+    else{
+      document.getElementById('next').onclick=function(){i++;show()};
+      var b=document.getElementById('back');if(b)b.onclick=function(){i--;show()};
+    }
+  }
+
+  function initAsk(){
+    var yes=document.getElementById('yes'),no=document.getElementById('no'),hint=document.getElementById('hint');
+    var n=0;
+    var lines=["Oops, catch me if you can 😜","Not so easy 🥺","Please stop trying...","Okay, just press Yes 🌸"];
+    var yesTxt=["Yes, I will talk","Yes, please 🥺","SAY YES 🥹","Yes, I forgive you 🌸"];
+    function dodge(ev){
+      if(ev){ev.preventDefault&&ev.preventDefault();ev.stopPropagation&&ev.stopPropagation();}
+      n++;
+      if(n>=4){
+        yes.className='yes l4';yes.textContent=yesTxt[3];no.classList.add('hide');hint.textContent='';return;
+      }
+      yes.className='yes l'+n;yes.textContent=yesTxt[n];
+      hint.textContent=lines[n-1];
+      no.classList.add('run');
+      var w=no.offsetWidth,h=no.offsetHeight,pad=12;
+      var maxX=window.innerWidth-w-pad,maxY=window.innerHeight-h-pad;
+      no.style.left=Math.max(pad,Math.random()*maxX)+'px';
+      no.style.top=Math.max(pad,Math.random()*maxY)+'px';
+      no.style.transform='scale('+(1-n*0.12)+')';
+    }
+    ['pointerdown','mouseenter','touchstart','click','focus'].forEach(function(t){no.addEventListener(t,dodge,{passive:false})});
+    yes.onclick=celebrate;
+  }
+
+  function celebrate(){
+    dots.classList.add('hide');
+    card.className='card done';
+    card.innerHTML='<div class="face">🥹</div><h1>Thank you, Luba</h1><p>Thank you for listening.</p><p>I am right here.</p><div class="sign">Yours, and very happy now 🌸</div>';
+    var burst=["🌸","✨","🌷","🌼","🧸","💫"];
+    for(var k=0;k<40;k++){var e=document.createElement('i');e.textContent=burst[k%burst.length];
+      e.style.left=(Math.random()*100)+'vw';e.style.fontSize=(20+Math.random()*22)+'px';e.style.opacity=1;
+      e.style.animationDuration=(3+Math.random()*4)+'s';e.style.animationDelay=(-Math.random()*3)+'s';sky.appendChild(e);}
+  }
+  show();
+})();
+</script>
+</body>
+</html>
